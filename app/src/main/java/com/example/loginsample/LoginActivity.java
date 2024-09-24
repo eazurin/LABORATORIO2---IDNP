@@ -2,6 +2,7 @@ package com.example.loginsample;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText edtUsername = binding.edtUsername;
         EditText edtPassword = binding.edtPassword;
         Button btnLogin = binding.btnLongin;
+        Button btnAddAccount = binding.btnAddAccount;
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             }
+        });
+
+        btnAddAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+            startActivity(intent);
         });
 
 
