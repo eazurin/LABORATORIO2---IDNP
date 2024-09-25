@@ -44,8 +44,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AccountEntity accountEntity = new AccountEntity();
-                accountEntity.setFirstnane(edtFirstname.getText().toString());
-                accountEntity.setLastnane(edtLastname.getText().toString());
+                accountEntity.setFirstname(edtFirstname.getText().toString());
+                accountEntity.setLastname(edtLastname.getText().toString());
                 accountEntity.setEmail(edtEmail.getText().toString());
                 accountEntity.setPhone(edtPhone.getText().toString());
                 accountEntity.setUsername(edtUsername2.getText().toString());

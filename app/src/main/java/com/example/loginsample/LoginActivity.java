@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             saveToFile(accountEntity, "cuentas.txt");
 
-                            String firstname = accountEntity.getFirstnane();
+                            String firstname = accountEntity.getFirstname();
                             Toast.makeText(getApplicationContext(), "Nombre: " + firstname, Toast.LENGTH_SHORT).show();
                             Log.d("LoginActivity", "Nombre: " + firstname);
                         } else if (resultCode == AccountActivity.ACCOUNT_CANCELAR) {
@@ -124,16 +124,13 @@ public class LoginActivity extends AppCompatActivity {
                 String user = jsonObject.getString("username");
                 String password = jsonObject.getString("password");
 
-                if (loginApp(user, password)) {
-                    userFound = true;
-                    break;
-                }
+                userFound = loginApp(user, password);
             }
 
             bufferedReader.close();
 
             if (!userFound) {
-                Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Cuenta no encontrada", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
@@ -144,8 +141,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean loginApp(String username, String password) {
         if (edtUsername.getText().toString().equals(username) && edtPassword.getText().toString().equals(password)) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a mi app", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Bienvenido a mi app");
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.putExtra("username", username);
+            startActivity(intent);
+            finish();
             return true;
         }
         return false;

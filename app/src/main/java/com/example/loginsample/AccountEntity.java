@@ -1,9 +1,9 @@
 package com.example.loginsample;
 
 public class AccountEntity {
-    private String firstnane;
+    private String firstname;
 
-    private String lastnane;
+    private String lastname;
 
     private String email;
 
@@ -13,20 +13,20 @@ public class AccountEntity {
 
     private String password;
 
-    public String getFirstnane() {
-        return firstnane;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstnane(String firstnane) {
-        this.firstnane = firstnane;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastnane() {
-        return lastnane;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastnane(String lastnane) {
-        this.lastnane = lastnane;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
