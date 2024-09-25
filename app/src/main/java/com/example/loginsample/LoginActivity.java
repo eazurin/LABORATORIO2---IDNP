@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             String firstname = accountEntity.getFirstnane();
                             Toast.makeText(getApplicationContext(), "Nombre: " + firstname, Toast.LENGTH_SHORT).show();
-                            Log.d("LoginActivity", "Nombre"+firstname);
+                            Log.d("LoginActivity", "Nombre: "+firstname);
 
                         } else if (resultCode == AccountActivity.ACCOUNT_CANCELAR) {
                             Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
