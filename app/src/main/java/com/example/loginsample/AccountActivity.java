@@ -1,13 +1,18 @@
 package com.example.loginsample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.gson.Gson;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -32,18 +37,18 @@ public class AccountActivity extends AppCompatActivity {
         EditText edtLastname = findViewById(R.id.edtLastname);
         EditText edtEmail = findViewById(R.id.edtEmail);
         EditText edtPhone = findViewById(R.id.edtPhone);
-        EditText edtUsername = findViewById(R.id.edtUsername2);
+        EditText edtUsername2 = findViewById(R.id.edtUsername2);
         EditText edtPassword2 = findViewById(R.id.edtPassword2);
 
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AccountEntity accountEntity = new AccountEntity();
-                accountEntity.setFirstname(edtFirstname.getText().toString());
-                accountEntity.setLastname(edtLastname.getText().toString());
+                accountEntity.setFirstnane(edtFirstname.getText().toString());
+                accountEntity.setLastnane(edtLastname.getText().toString());
                 accountEntity.setEmail(edtEmail.getText().toString());
                 accountEntity.setPhone(edtPhone.getText().toString());
-                accountEntity.setUsername(edtUsername2.getText().toString());
+                accountEntity.setUsernane(edtUsername2.getText().toString());
                 accountEntity.setPassword(edtPassword2.getText().toString());
 
                 Gson gson = new Gson();

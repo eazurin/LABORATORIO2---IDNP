@@ -12,9 +12,12 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginsample.databinding.ActivityMainBinding;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -53,21 +56,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnAddAccount.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-
-        });
-
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult activityResult) {
                         Integer resultCode = activityResult.getResultCode();
-                        Intent data = activityResult.getData();
+                        if (resultCode == AccountActivity.ACCOUNT_ACEPTAR) {
+                            Intent data = activityResult.getData();
+                            String account_record = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
+
+                            Gson gson = new Gson();
+                            AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
+
+                            String firstname = accountEntity.getFirstnane();
+                            Toast.makeText(getApplicationContext(), "Nombre: " + firstname, Toast.LENGTH_SHORT).show();
+                            Log.d("LoginActivity", "Nombre"+firstname);
+
+                        } else if (resultCode == AccountActivity.ACCOUNT_CANCELAR) {
+                            Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                            Log.d("LoginActivity", "Cancelado");
+                        }
                     }
                 }
         );
+
+        btnAddAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+            activityResultLauncher.launch(intent);
+        });
 
 
     }
