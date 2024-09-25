@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginsample.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,6 +29,9 @@ import java.io.InputStreamReader;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+    private EditText edtUsername;
+    private EditText edtPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        EditText edtUsername = binding.edtUsername;
-        EditText edtPassword = binding.edtPassword;
+        edtUsername = binding.edtUsername;
+        edtPassword = binding.edtPassword;
         Button btnLogin = binding.btnLongin;
         Button btnAddAccount = binding.btnAddAccount;
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(edtUsername.getText().toString().equals("admin") && edtPassword.getText().toString().equals("admin")) {
-                    Toast.makeText(getApplicationContext(), "Bienvenido a mi app", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Bienvenido a mi app");
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error en la autenticacion", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Error en la autenticacion");
-                }
-
-            }
-        });
+        btnLogin.setOnClickListener(v -> readFromFile("cuentas.txt"));
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -79,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             String firstname = accountEntity.getFirstnane();
                             Toast.makeText(getApplicationContext(), "Nombre: " + firstname, Toast.LENGTH_SHORT).show();
-                            Log.d("LoginActivity", "Nombre: "+ firstname);
-                            readFromFile("cuentas.txt");
+                            Log.d("LoginActivity", "Nombre: " + firstname);
                         } else if (resultCode == AccountActivity.ACCOUNT_CANCELAR) {
                             Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                             Log.d("LoginActivity", "Cancelado");
@@ -116,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
     private void readFromFile(String filename) {
         try {
             FileInputStream fis = openFileInput(filename);
@@ -124,15 +115,40 @@ public class LoginActivity extends AppCompatActivity {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
             String line;
+            boolean userFound = false;
             Log.d(TAG, "Datos guardados:");
+
             while ((line = bufferedReader.readLine()) != null) {
-                Log.d(TAG, line + "\n");
+                String jsonString = line.substring(line.indexOf("{"));
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String user = jsonObject.getString("username");
+                String password = jsonObject.getString("password");
+
+                if (loginApp(user, password)) {
+                    userFound = true;
+                    break;
+                }
             }
+
             bufferedReader.close();
+
+            if (!userFound) {
+                Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+            }
+
         } catch (Exception e) {
             Log.e(TAG, "Error al leer datos: " + e.getMessage());
             Toast.makeText(this, "Error al leer datos", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean loginApp(String username, String password) {
+        if (edtUsername.getText().toString().equals(username) && edtPassword.getText().toString().equals(password)) {
+            Toast.makeText(getApplicationContext(), "Bienvenido a mi app", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Bienvenido a mi app");
+            return true;
+        }
+        return false;
     }
 
 }

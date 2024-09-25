@@ -9,7 +9,7 @@ public class AccountEntity {
 
     private String phone;
 
-    private String usernane;
+    private String username;
 
     private String password;
 
@@ -45,12 +45,12 @@ public class AccountEntity {
         this.phone = phone;
     }
 
-    public String getUsernane() {
-        return usernane;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsernane(String usernane) {
-        this.usernane = usernane;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

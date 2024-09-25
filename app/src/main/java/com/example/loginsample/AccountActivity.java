@@ -48,7 +48,7 @@ public class AccountActivity extends AppCompatActivity {
                 accountEntity.setLastnane(edtLastname.getText().toString());
                 accountEntity.setEmail(edtEmail.getText().toString());
                 accountEntity.setPhone(edtPhone.getText().toString());
-                accountEntity.setUsernane(edtUsername2.getText().toString());
+                accountEntity.setUsername(edtUsername2.getText().toString());
                 accountEntity.setPassword(edtPassword2.getText().toString());
 
                 Gson gson = new Gson();
