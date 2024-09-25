@@ -19,6 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginsample.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
@@ -69,10 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                             Gson gson = new Gson();
                             AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
 
+                            saveToFile(accountEntity, "cuentas.txt");
+
                             String firstname = accountEntity.getFirstnane();
                             Toast.makeText(getApplicationContext(), "Nombre: " + firstname, Toast.LENGTH_SHORT).show();
-                            Log.d("LoginActivity", "Nombre: "+firstname);
-
+                            Log.d("LoginActivity", "Nombre: "+ firstname);
+                            readFromFile("cuentas.txt");
                         } else if (resultCode == AccountActivity.ACCOUNT_CANCELAR) {
                             Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                             Log.d("LoginActivity", "Cancelado");
@@ -85,7 +93,46 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
             activityResultLauncher.launch(intent);
         });
-
-
     }
+
+    private void saveToFile(AccountEntity accountEntity, String fileName) {
+        FileOutputStream fos = null;
+        try {
+            Gson gson = new Gson();
+            String jsonData = gson.toJson(accountEntity);
+            fos = openFileOutput(fileName, MODE_APPEND);
+            fos.write(jsonData.getBytes());
+            fos.write("\n".getBytes());
+
+        } catch (IOException e) {
+            Log.e("LoginActivity", "Error al guardar el archivo", e);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    Log.e("LoginActivity", "Error al cerrar el archivo", e);
+                }
+            }
+        }
+    }
+
+    private void readFromFile(String filename) {
+        try {
+            FileInputStream fis = openFileInput(filename);
+            InputStreamReader inputStreamReader = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String line;
+            Log.d(TAG, "Datos guardados:");
+            while ((line = bufferedReader.readLine()) != null) {
+                Log.d(TAG, line + "\n");
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error al leer datos: " + e.getMessage());
+            Toast.makeText(this, "Error al leer datos", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
