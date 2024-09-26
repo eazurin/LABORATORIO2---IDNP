@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private EditText edtUsername;
     private EditText edtPassword;
+    private ActivityResultLauncher<Intent> homeActivityLauncher;
 
 
     @Override
@@ -54,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         Button btnAddAccount = binding.btnAddAccount;
 
         btnLogin.setOnClickListener(v -> readFromFile("cuentas.txt"));
+        homeActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {}
+        );
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -143,11 +148,10 @@ public class LoginActivity extends AppCompatActivity {
         if (edtUsername.getText().toString().equals(username) && edtPassword.getText().toString().equals(password)) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.putExtra("username", username);
-            startActivity(intent);
+            homeActivityLauncher.launch(intent);
             finish();
             return true;
         }
         return false;
     }
-
 }
